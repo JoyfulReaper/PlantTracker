@@ -1,42 +1,42 @@
 BEGIN TRANSACTION;
-CREATE TABLE IF NOT EXISTS "PlantNote" (
-	"PlantNoteId"	INTEGER NOT NULL UNIQUE,
-	"PlantId"	INTEGER NOT NULL,
-	PRIMARY KEY("PlantNoteId" AUTOINCREMENT),
-	FOREIGN KEY("PlantId") REFERENCES "Plant"("PlantId")
-);
 CREATE TABLE IF NOT EXISTS "Activity" (
-	"ActivityId"	INTEGER NOT NULL UNIQUE,
+	"ActivityId"	INTEGER,
 	"Name"	TEXT NOT NULL UNIQUE,
-	PRIMARY KEY("ActivityId" AUTOINCREMENT)
+	PRIMARY KEY("ActivityId")
 );
 CREATE TABLE IF NOT EXISTS "Note" (
-	"NoteId"	INTEGER NOT NULL UNIQUE,
+	"NoteId"	INTEGER,
 	"Text"	TEXT NOT NULL,
-	PRIMARY KEY("NoteId" AUTOINCREMENT)
+	PRIMARY KEY("NoteId")
+);
+CREATE TABLE IF NOT EXISTS "Plant" (
+	"PlantId"	INTEGER,
+	"Name"	TEXT NOT NULL,
+	"Location"	TEXT,
+	PRIMARY KEY("PlantId")
 );
 CREATE TABLE IF NOT EXISTS "PlantActivity" (
-	"PlantActivityId"	INTEGER NOT NULL UNIQUE,
+	"PlantActivityId"	INTEGER,
 	"PlantId"	INTEGER NOT NULL,
 	"ActivityId"	INTEGER NOT NULL,
 	"ActivityDate"	TEXT DEFAULT 'DATETIME()',
-	PRIMARY KEY("PlantActivityId" AUTOINCREMENT),
 	FOREIGN KEY("PlantId") REFERENCES "Plant"("PlantId"),
-	FOREIGN KEY("ActivityId") REFERENCES "sqlite_sequence"
+	FOREIGN KEY("ActivityId") REFERENCES "sqlite_sequence",
+	PRIMARY KEY("PlantActivityId")
 );
-CREATE TABLE IF NOT EXISTS "Plant" (
-	"PlantId"	INTEGER NOT NULL UNIQUE,
-	"Name"	TEXT NOT NULL,
-	"Location"	TEXT,
-	PRIMARY KEY("PlantId" AUTOINCREMENT)
+CREATE TABLE IF NOT EXISTS "PlantNote" (
+	"PlantNoteId"	INTEGER,
+	"PlantId"	INTEGER NOT NULL,
+	FOREIGN KEY("PlantId") REFERENCES "Plant"("PlantId"),
+	PRIMARY KEY("PlantNoteId")
 );
 CREATE TABLE IF NOT EXISTS "PlantPhoto" (
-	"PlantPhotoId"	INTEGER NOT NULL UNIQUE,
+	"PlantPhotoId"	INTEGER,
 	"PlantId"	INTEGER NOT NULL,
 	"Photo"	BLOB NOT NULL,
 	"PhotoContentType"	TEXT NOT NULL,
 	"DateAdded"	TEXT NOT NULL DEFAULT 'GETDATETIME()',
-	PRIMARY KEY("PlantPhotoId" AUTOINCREMENT),
-	FOREIGN KEY("PlantId") REFERENCES "Plant"("PlantId")
+	FOREIGN KEY("PlantId") REFERENCES "Plant"("PlantId"),
+	PRIMARY KEY("PlantPhotoId")
 );
 COMMIT;

@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components.WebView.Maui;
 using Microsoft.Extensions.Configuration;
+using PlantTracker.Library.Data;
 using PlantTracker.Library.Services;
 using System.Reflection;
 
@@ -19,6 +20,7 @@ public static class MauiProgram
 
         builder.Services.AddMauiBlazorWebView();
 		builder.Services.AddTransient<DatabaseSeederService>();
+		builder.Services.AddTransient<PlantData>();
         
 		#if DEBUG
 		builder.Services.AddBlazorWebViewDeveloperTools();

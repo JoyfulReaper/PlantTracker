@@ -6,14 +6,24 @@ using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 namespace PlantTracker.Library.Services;
 public class DatabaseSeederService
 {
     public async Task SeedDatabase(string sql)
-    {
-        using IDbConnection connection = new SqliteConnection();
+{
+        var test = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "PlantTracker.db"); 
+        using SqliteConnection connection = new SqliteConnection("Data source="+test+";");
 
-        await connection.ExecuteAsync(sql);
+        try
+        {
+            connection.Open();
+            await connection.ExecuteAsync(sql);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+        }
     }
 }
