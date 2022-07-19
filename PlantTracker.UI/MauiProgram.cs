@@ -33,7 +33,7 @@ public static class MauiProgram
         using var stream = FileSystem.OpenAppPackageFileAsync("PlantTrackerDb.db.sql").GetAwaiter().GetResult();
         using var reader = new StreamReader(stream);
         var sql = reader.ReadToEnd();
-		seeder.SeedDatabase(sql).GetAwaiter().GetResult();
+		seeder.SeedDatabase(sql);
 
         return app;
 	}

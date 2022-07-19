@@ -11,15 +11,14 @@ using System.Xml.Linq;
 namespace PlantTracker.Library.Services;
 public class DatabaseSeederService
 {
-    public async Task SeedDatabase(string sql)
-{
-        var test = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "PlantTracker.db"); 
-        using SqliteConnection connection = new SqliteConnection("Data source="+test+";");
+    public void SeedDatabase(string sql)
+    {
+        using SqliteConnection connection = new SqliteConnection(StaticConfiguration.ConnectionString);
 
         try
         {
             connection.Open();
-            await connection.ExecuteAsync(sql);
+            connection.Execute(sql);
         }
         catch (Exception ex)
         {

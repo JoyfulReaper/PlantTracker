@@ -13,7 +13,7 @@ public class PlantData
 {
     public async Task InsertPlant(Plant plant)
     {
-        using IDbConnection connection = new SqliteConnection();
+        using IDbConnection connection = new SqliteConnection(StaticConfiguration.ConnectionString);
 
         string sql = "INSERT INTO Plant (Name, Location) VALUES (@Name, @Location)";
         await connection.ExecuteAsync(sql, new
@@ -25,7 +25,7 @@ public class PlantData
 
     public async Task<IEnumerable<Plant>> GetAll()
     {
-        using IDbConnection connection = new SqliteConnection();
+        using IDbConnection connection = new SqliteConnection(StaticConfiguration.ConnectionString);
 
         string sql = "SELECT * FROM Plant";
         var plants = await connection.QueryAsync<Plant>(sql);
