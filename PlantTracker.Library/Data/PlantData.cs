@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 namespace PlantTracker.Library.Data;
 public class PlantData
 {
-    public async Task InsertPlant(Plant plant)
+    public async Task Insert(Plant plant)
     {
         using IDbConnection connection = new SqliteConnection(StaticConfiguration.ConnectionString);
 
@@ -31,5 +31,15 @@ public class PlantData
         var plants = await connection.QueryAsync<Plant>(sql);
         
         return plants;
+    }
+
+    public async Task<Plant> Get(int plantId)
+    {
+        using IDbConnection connection = new SqliteConnection(StaticConfiguration.ConnectionString);
+
+        string sql = "SELECT * FROM Plant WHERE PlantId = @PlantId";
+        var plant = await connection.QuerySingleAsync<Plant>(sql, new { PlantId = plantId });
+
+        return plant;
     }
 }

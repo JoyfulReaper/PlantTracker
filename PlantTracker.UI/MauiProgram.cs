@@ -29,7 +29,7 @@ public static class MauiProgram
         
 		var app = builder.Build();
 
-		var seeder = app.Services.CreateScope().ServiceProvider.GetRequiredService<DatabaseSeederService>();
+		var seeder = app.Services.GetRequiredService<DatabaseSeederService>();
         using var stream = FileSystem.OpenAppPackageFileAsync("PlantTrackerDb.db.sql").GetAwaiter().GetResult();
         using var reader = new StreamReader(stream);
         var sql = reader.ReadToEnd();

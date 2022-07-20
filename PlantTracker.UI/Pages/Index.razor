@@ -1,15 +1,33 @@
 ﻿@page "/"
-@inject PlantData _plants
+@inject PlantData _plantData
 
-<h1>Hello, world!</h1>
+<table class="table table-sm table-striped table bordered">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Location</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var plant in _plants)
+        {
+            <tr>
+                <td>@plant.Name</td>
+                <td>@plant.Location</td>
+                <td><a href="plants/view-plant/@plant.PlantId">view</a></td>
+            </tr>
+        }
+    </tbody>
+</table>
 
-Welcome to your new app.
 
 @code
 {
+    private IEnumerable<Plant> _plants;
+
     protected override async Task OnInitializedAsync()
     {
-        var plants = await _plants.GetAll();
-        var x = 1;
+        _plants = await _plantData.GetAll();
     }
 }

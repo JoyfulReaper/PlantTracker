@@ -1,4 +1,4 @@
-﻿@page "/plants"
+﻿@page "/plants/add-plant"
 
 @inject PlantData _plantData
 
@@ -27,6 +27,6 @@
 
     private async Task HandleValidSubmit(EditContext editContext)
     {
-        await _plantData.InsertPlant(_plant);
+        await _plantData.Insert(_plant);
     }
 }

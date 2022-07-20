@@ -39,4 +39,7 @@ CREATE TABLE IF NOT EXISTS "PlantPhoto" (
 	FOREIGN KEY("PlantId") REFERENCES "Plant"("PlantId"),
 	PRIMARY KEY("PlantPhotoId")
 );
+INSERT OR IGNORE INTO "Activity" VALUES (1,'Created');
+INSERT OR IGNORE INTO "Activity" VALUES (2,'Watered');
+INSERT OR IGNORE INTO "Activity" VALUES (3,'Fertilized');
 COMMIT;

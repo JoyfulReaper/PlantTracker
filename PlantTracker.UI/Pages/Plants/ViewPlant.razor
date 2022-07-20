@@ -1,0 +1,17 @@
+﻿@page "/plants/view-plant/{Id:int}"
+@inject PlantData _plantData
+
+<h3>@_plant.Name</h3>
+<h4>@_plant.Location</h4>
+
+@code {
+    [Parameter]
+    public int Id { get; set; }
+
+    private Plant _plant;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _plant = await _plantData.Get(Id);
+    }
+}
