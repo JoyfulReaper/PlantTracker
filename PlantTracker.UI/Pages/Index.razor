@@ -1,25 +1,29 @@
 ﻿@page "/"
 @inject PlantData _plantData
 
-<table class="table table-sm table-striped table bordered">
-    <thead>
-        <tr>
-            <th>Name</th>
-            <th>Location</th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var plant in _plants)
-        {
-            <tr>
-                <td>@plant.Name</td>
-                <td>@plant.Location</td>
-                <td><a href="plants/view-plant/@plant.PlantId">view</a></td>
-            </tr>
-        }
-    </tbody>
-</table>
+<div class="row justify-content-center">
+    <div class="col-12 col-xl-10">
+        <table class="table table-sm table-striped table bordered">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Location</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var plant in _plants)
+                {
+                    <tr>
+                        <td>@plant.Name</td>
+                        <td>@plant.Location</td>
+                        <td><a href="plants/view-plant/@plant.PlantId">view</a></td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
 
 
 @code

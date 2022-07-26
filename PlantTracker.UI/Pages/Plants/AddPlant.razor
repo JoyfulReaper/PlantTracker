@@ -1,6 +1,7 @@
 ﻿@page "/plants/add-plant"
 
 @inject PlantData _plantData
+@inject NavigationManager _nav
 
 <h3>Plants</h3>
 
@@ -28,5 +29,6 @@
     private async Task HandleValidSubmit(EditContext editContext)
     {
         await _plantData.Insert(_plant);
+        _nav.NavigateTo($"plants/view-plant/{_plant.PlantId}");
     }
 }

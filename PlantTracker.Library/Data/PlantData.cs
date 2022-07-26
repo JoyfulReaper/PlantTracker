@@ -15,12 +15,14 @@ public class PlantData
     {
         using IDbConnection connection = new SqliteConnection(StaticConfiguration.ConnectionString);
 
-        string sql = "INSERT INTO Plant (Name, Location) VALUES (@Name, @Location)";
-        await connection.ExecuteAsync(sql, new
+        string sql = "INSERT INTO Plant (Name, Location) VALUES (@Name, @Location); SELECT last_insert_rowid()";
+        var id = await connection.QuerySingleAsync<int>(sql, new
         {
             Name = plant.Name,
             Location = plant.Location,
         });
+
+        plant.PlantId = id;
     }
 
     public async Task<IEnumerable<Plant>> GetAll()
