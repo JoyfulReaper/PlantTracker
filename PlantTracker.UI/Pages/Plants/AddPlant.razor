@@ -16,6 +16,11 @@
             <label class="form-label">Location</label>
             <InputText type="text" class="form-control" @bind-Value="_plant.Location" />
         </div>
+        <div class="mb-1">
+            <label class="form-label">Photo</label>
+                <InputFile OnChange="LoadPhoto" accept="image/*" capture />
+                <input type="file" accept="image/*;capture=camera">
+        </div>
         <div>
             <button class="btn btn-primary" type="submit">Add Plant</button>
         </div>
@@ -25,10 +30,21 @@
 
 @code {
     private Plant _plant = new();
+    private bool _isUploading;
+    private IBrowserFile _photo;
 
     private async Task HandleValidSubmit(EditContext editContext)
     {
         await _plantData.Insert(_plant);
         _nav.NavigateTo($"plants/view-plant/{_plant.PlantId}");
+    }
+
+    private async Task LoadPhoto(InputFileChangeEventArgs e)
+    {
+        _isUploading = true;
+
+        _photo = e.File;
+
+        _isUploading = false;
     }
 }

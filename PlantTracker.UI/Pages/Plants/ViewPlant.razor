@@ -1,8 +1,15 @@
 ﻿@page "/plants/view-plant/{Id:int}"
 @inject PlantData _plantData
 
-<h3>@_plant.Name</h3>
-<h4>@_plant.Location</h4>
+<div class="row justify-content-center">
+    <div class="col-12 col-xl-10">
+        <div class="text-center">
+            <h3>@_plant.Name</h3>
+            <h4>@_plant.Location</h4>
+        </div>
+       
+    </div>
+</div>
 
 @code {
     [Parameter]

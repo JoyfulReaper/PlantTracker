@@ -61,4 +61,8 @@
 	  <ProjectReference Include="..\PlantTracker.Library\PlantTracker.Library.csproj" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <Folder Include="Shared\Components\" />
+	</ItemGroup>
+
 </Project>
