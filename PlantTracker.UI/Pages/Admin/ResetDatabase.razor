@@ -4,6 +4,7 @@
 
 @using PlantTracker.Library
 @using PlantTracker.Library.Services
+@using Microsoft.Data.Sqlite
 
 @inject IDialogService _dialog
 
@@ -19,9 +20,13 @@
     private async Task DeleteDatabase()
     {
         var delete = await _dialog.DisplayConfirm("Delete Database?", "Reset the database?", "DO IT!", "NOOOOOOooooo!");
-        if(delete)
+        if (delete)
         {
+            SqliteConnection connection = new SqliteConnection(StaticConfiguration.ConnectionString);
+            SqliteConnection.ClearAllPools();
             File.Delete(StaticConfiguration.DatabaseFile);
+
+            await _dialog.DisplayConfirm("Database Deleted", "Database deleted, quiting application", "Ok");
 
             Application.Current.Quit();
         }
