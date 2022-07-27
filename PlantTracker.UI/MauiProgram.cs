@@ -21,8 +21,7 @@ public static class MauiProgram
 			});
 
         builder.Services.AddMauiBlazorWebView();
-		builder.Services.AddTransient<DatabaseSeederService>();
-		builder.Services.AddTransient<PlantData>();
+		builder.Services.AddTransient(provider => new PlantData(StaticConfiguration.ConnectionString));
 		builder.Services.AddTransient<IDialogService, DialogService>();
         
 		#if DEBUG
@@ -32,12 +31,20 @@ public static class MauiProgram
         
 		var app = builder.Build();
 
-		var seeder = app.Services.GetRequiredService<DatabaseSeederService>();
+
+        SeedDatabase();
+
+		return app;
+	}
+
+	private static void SeedDatabase()
+	{
+        var connectionString = $"Data Source={Path.Combine(FileSystem.Current.AppDataDirectory, "PlantTracker.db")}";
+		var seeder = new RawSqlExecuter(connectionString);
+
         using var stream = FileSystem.OpenAppPackageFileAsync("PlantTrackerDb.db.sql").GetAwaiter().GetResult();
         using var reader = new StreamReader(stream);
         var sql = reader.ReadToEnd();
-		seeder.SeedDatabase(sql);
-
-        return app;
-	}
+        seeder.ExecuteSql(sql);
+    }
 }

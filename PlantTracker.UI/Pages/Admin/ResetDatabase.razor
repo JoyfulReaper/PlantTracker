@@ -6,7 +6,6 @@
 @using PlantTracker.Library.Services
 
 @inject IDialogService _dialog
-@inject DatabaseSeederService _seeder
 
 <div class="row justify-content-center">
     <div class="col-12 col-xl-10">
@@ -24,12 +23,6 @@
         {
             File.Delete(StaticConfiguration.DatabaseFile);
 
-            using var stream = FileSystem.OpenAppPackageFileAsync("PlantTrackerDb.db.sql").GetAwaiter().GetResult();
-            using var reader = new StreamReader(stream);
-            var sql = reader.ReadToEnd();
-            _seeder.SeedDatabase(sql);
-
-            await _dialog.DisplayConfirm("You have to quit", "You have to quit now, clean database when you re-start", "Ok");
             Application.Current.Quit();
         }
     }

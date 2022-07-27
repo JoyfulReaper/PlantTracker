@@ -11,9 +11,15 @@ using System.Threading.Tasks;
 namespace PlantTracker.Library.Data;
 public class PlantActivityData
 {
+    private string _connectionString;
+    public PlantActivityData(string connectionString)
+    {
+        _connectionString = connectionString;
+    }
+
     public async Task<IEnumerable<PlantActivity>> GetAll(int plantId)
     {
-        using IDbConnection connection = new SqliteConnection(StaticConfiguration.ConnectionString);
+        using IDbConnection connection = new SqliteConnection(_connectionString);
 
         string sql = "SELECT * FROM PlantActivity WHERE PlantId = @PlantId";
         var plantActivities = await connection.QueryAsync<PlantActivity>(sql, new { PlantId = plantId });
@@ -23,7 +29,7 @@ public class PlantActivityData
 
     public async Task AddActivity(int plantId, int activityId)
     {
-        using IDbConnection connection = new SqliteConnection(StaticConfiguration.ConnectionString);
+        using IDbConnection connection = new SqliteConnection(_connectionString);
 
         string sql = "INSERT INTO PlantActivity (PlantId, ActivityId) VALUES (@PlantId, @ActivityId)";
         await connection.ExecuteAsync(sql, new
