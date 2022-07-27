@@ -2,6 +2,8 @@
 using Microsoft.Extensions.Configuration;
 using PlantTracker.Library.Data;
 using PlantTracker.Library.Services;
+using PlantTracker.UI.Services;
+using PlantTracker.UI.Services.Interfaces;
 using System.Reflection;
 
 namespace PlantTracker.UI;
@@ -21,6 +23,7 @@ public static class MauiProgram
         builder.Services.AddMauiBlazorWebView();
 		builder.Services.AddTransient<DatabaseSeederService>();
 		builder.Services.AddTransient<PlantData>();
+		builder.Services.AddTransient<IDialogService, DialogService>();
         
 		#if DEBUG
 		builder.Services.AddBlazorWebViewDeveloperTools();

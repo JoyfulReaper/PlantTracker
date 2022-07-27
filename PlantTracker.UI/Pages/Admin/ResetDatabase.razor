@@ -1,0 +1,36 @@
+﻿@*I know, I know... it's horrible code*@
+
+@page "/admin/reset-database"
+
+@using PlantTracker.Library
+@using PlantTracker.Library.Services
+
+@inject IDialogService _dialog
+@inject DatabaseSeederService _seeder
+
+<div class="row justify-content-center">
+    <div class="col-12 col-xl-10">
+        <button class="btn btn-danger d-block mx-auto mt-5" type="button" @onclick="DeleteDatabase">
+            Do it!
+        </button>
+    </div>
+</div>
+
+@code {
+    private async Task DeleteDatabase()
+    {
+        var delete = await _dialog.DisplayConfirm("Delete Database?", "Reset the database?", "DO IT!", "NOOOOOOooooo!");
+        if(delete)
+        {
+            File.Delete(StaticConfiguration.DatabaseFile);
+
+            using var stream = FileSystem.OpenAppPackageFileAsync("PlantTrackerDb.db.sql").GetAwaiter().GetResult();
+            using var reader = new StreamReader(stream);
+            var sql = reader.ReadToEnd();
+            _seeder.SeedDatabase(sql);
+
+            await _dialog.DisplayConfirm("You have to quit", "You have to quit now, clean database when you re-start", "Ok");
+            Application.Current.Quit();
+        }
+    }
+}

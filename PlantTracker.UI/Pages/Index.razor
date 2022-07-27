@@ -30,7 +30,7 @@
 {
     private IEnumerable<Plant> _plants;
 
-    protected override async Task OnInitializedAsync()
+    protected override async Task OnParametersSetAsync()
     {
         _plants = await _plantData.GetAll();
     }

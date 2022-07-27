@@ -7,5 +7,6 @@ using System.Threading.Tasks;
 namespace PlantTracker.Library;
 public static class StaticConfiguration
 {
-    public static string ConnectionString { get; } = $"Data Source={Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "PlantTracker.db")};"; 
+    public static string DatabaseFile = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "PlantTracker.db");
+    public static string ConnectionString { get; } = $"Data Source={DatabaseFile};"; 
 }
