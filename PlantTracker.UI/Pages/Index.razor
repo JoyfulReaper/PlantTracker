@@ -2,6 +2,7 @@
 @inject PlantVmService _plantVm
 @inject IImageService _image
 @inject IDialogService _dialog
+@inject IMediaService _media
 
 @if(_plants != null)
 {
@@ -43,7 +44,7 @@ else
     protected override async Task OnParametersSetAsync()
     {
         try {
-            _plants = await _plantVm.GetAll(300);
+            _plants = await _plantVm.GetAll((int)_media.GetScreenWidth() / 8);
         }
         catch(Exception ex)
         {

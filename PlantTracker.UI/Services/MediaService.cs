@@ -12,6 +12,16 @@ internal class MediaService : IMediaService
         
     }
     
+    public double GetScreenWidth()
+    {
+        return DeviceDisplay.Current.MainDisplayInfo.Width;
+    }
+
+    public double GetScreenHeight()
+    {
+        return DeviceDisplay.Current.MainDisplayInfo.Height;
+    }
+
     public async Task<FileDetails> TakePhoto()
     {
         if (!_mediaPicker.IsCaptureSupported)
