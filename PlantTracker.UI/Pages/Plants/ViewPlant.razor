@@ -29,7 +29,7 @@
         _plant = await _plantData.Get(Id);
         if(_plant.PlantPhotoId != null)
         {
-            _plantPhoto = await _plantPhotoData.GetPlantPhoto(_plant.PlantPhotoId.Value);
+            _plantPhoto = await _plantPhotoData.Get(_plant.PlantPhotoId.Value);
         }
     }
 }

@@ -33,7 +33,7 @@ public class PlantPhotoData
         plantPhoto.PlantPhotoId = id;
     }
 
-    public async Task<PlantPhoto> GetPlantPhoto(int plantPhotoId)
+    public async Task<PlantPhoto> Get(int plantPhotoId)
     {
         using IDbConnection connection = new SqliteConnection(_connectionString);
 

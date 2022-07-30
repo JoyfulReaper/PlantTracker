@@ -1,5 +1,6 @@
 ﻿@page "/"
-@inject PlantData _plantData
+@inject PlantVmService _plantVm
+@inject IImageService _image
 @inject IDialogService _dialog
 
 @if(_plants != null)
@@ -9,6 +10,7 @@
             <table class="table table-sm table-striped table bordered">
                 <thead>
                     <tr>
+                        <th>Image</th>
                         <th>Name</th>
                         <th>Location</th>
                         <th></th>
@@ -18,6 +20,7 @@
                     @foreach (var plant in _plants)
                     {
                         <tr>
+                            <td><img src="@_image.DecodeImage(plant.Photo, "image/jpeg")" /></td>
                             <td>@plant.Name</td>
                             <td>@plant.Location</td>
                             <td><a href="plants/view-plant/@plant.PlantId">view</a></td>
@@ -35,12 +38,12 @@ else
 
 @code
 {
-    private IEnumerable<Plant> _plants;
+    private IEnumerable<PlantVm> _plants;
 
     protected override async Task OnParametersSetAsync()
     {
         try {
-            _plants = await _plantData.GetAll();
+            _plants = await _plantVm.GetAll(300);
         }
         catch(Exception ex)
         {

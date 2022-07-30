@@ -31,6 +31,8 @@ public static class MauiProgram
         builder.Services.AddTransient<IImageService, ImageService>();
         builder.Services.AddTransient<PlantService>();
 
+        builder.Services.AddTransient<PlantVmService>();
+
         builder.Services.AddSingleton<IMediaPicker, CustomMediaPicker>();
 
 #if DEBUG
