@@ -4,31 +4,51 @@
 @inject IDialogService _dialog
 @inject IMediaService _media
 
-@if(_plants != null)
+@if (_plants != null)
 {
     <div class="row justify-content-center">
         <div class="col-12 col-xl-10">
-            <table class="table table-sm table-striped table bordered">
-                <thead>
-                    <tr>
-                        <th>Image</th>
-                        <th>Name</th>
-                        <th>Location</th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var plant in _plants)
-                    {
-                        <tr>
-                            <td><img src="@_image.DecodeImage(plant.Photo, "image/jpeg")" /></td>
-                            <td>@plant.Name</td>
-                            <td>@plant.Location</td>
-                            <td><a href="plants/view-plant/@plant.PlantId">view</a></td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
+
+            <div class="row">
+
+                @foreach (var plant in _plants)
+                {
+                    <div class="col-auto mb-3">
+                        <div class="card">
+                            <img src="@_image.DecodeImage(plant.Photo, "image/png", (int)_media.GetScreenWidth() / 4, 100)" class="card-img-top" alt="...">
+                            <div class="card-body">
+                                <a href="plants/view-plant/@plant.PlantId">
+                                    <h5 class="card-title">@plant.Name</h5>
+                                    </a>
+                                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+
+
+            @*<table class="table table-sm table-striped table bordered">
+        <thead>
+        <tr>
+        <th>Image</th>
+        <th>Name</th>
+        <th>Location</th>
+        <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var plant in _plants)
+        {
+        <tr>
+        <td><img src="@_image.DecodeImage(plant.Photo, "image/jpeg")" /></td>
+        <td>@plant.Name</td>
+        <td>@plant.Location</td>
+        <td><a href="plants/view-plant/@plant.PlantId">view</a></td>
+        </tr>
+        }
+        </tbody>
+        </table>*@
         </div>
     </div>
 }
@@ -43,10 +63,11 @@ else
 
     protected override async Task OnParametersSetAsync()
     {
-        try {
+        try
+        {
             _plants = await _plantVm.GetAll((int)_media.GetScreenWidth() / 8);
         }
-        catch(Exception ex)
+        catch (Exception ex)
         {
             await _dialog.DisplayConfirm("Error", ex.Message, "Ok");
         }

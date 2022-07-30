@@ -1,0 +1,41 @@
+﻿@page "/admin/test"
+
+@inject IMediaService _mediaService
+@inject IImageService _image
+@inject PlantVmService _plantVm
+@inject PlantPhotoData _plantPhoto
+
+<div class="row justify-content-center">
+    <div class="col-12 col-xl-10">
+@*        @foreach(var file in dbvFiles)
+        {
+            <img src="@_image.DecodeImage(file.Photo, "image/jpeg")" />
+        }*@
+        @foreach (var file in cacheFiles.Where(f => f.EndsWith(".jpg")))
+        {
+            <img src="@_image.DecodeImage(file, "image/jpeg")" />
+        }
+    </div>
+</div>
+
+
+@code {
+    private IEnumerable<PlantPhoto> dbFiles;
+    private IEnumerable<PlantVm> dbvFiles;
+    private IEnumerable<string> cacheFiles;
+
+    protected async override Task OnInitializedAsync()
+    {
+        var s = await Permissions.CheckStatusAsync<Permissions.StorageRead>();
+        if(s == PermissionStatus.Denied)
+        {
+            PermissionStatus status = await Permissions.RequestAsync<Permissions.StorageRead>();
+        }
+        string dir = FileSystem.CacheDirectory;
+        cacheFiles = Directory.GetFiles(dir, "*.*", SearchOption.AllDirectories);
+        //dbFiles = await _plantPhoto.GetAll();
+        //dbvFiles = await _plantVm.GetAll((int)_mediaService.GetScreenWidth() / 8);
+    }
+
+    
+}

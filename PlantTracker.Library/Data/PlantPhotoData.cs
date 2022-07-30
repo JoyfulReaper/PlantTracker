@@ -42,4 +42,14 @@ public class PlantPhotoData
 
         return plantPhoto;
     }
+
+    public async Task<IEnumerable<PlantPhoto>> GetAll()
+    {
+        using IDbConnection connection = new SqliteConnection(_connectionString);
+
+        string sql = "SELECT * FROM PlantPhoto";
+        var plantPhotos = await connection.QueryAsync<PlantPhoto>(sql);
+
+        return plantPhotos;
+    }
 }

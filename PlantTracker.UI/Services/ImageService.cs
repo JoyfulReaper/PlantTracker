@@ -4,14 +4,30 @@ using SkiaSharp;
 namespace PlantTracker.UI.Services;
 public class ImageService : IImageService
 {
-    public string DecodeImage(byte[] data, string type)
+    public string DecodeImage(byte[] data, string type, int? size = null, int quality = 75)
     {
         if (data is null || type is null)
         {
             return null;
         }
 
+        if (size != null)
+        {
+            data = ResizeImage(size.Value, quality, data);
+        }
+        
         return $"data:image/{type};base64,{Convert.ToBase64String(data)}";
+    }
+
+    public string DecodeImage(string path, string type, int? size = null, int quality = 75)
+    {
+        if (string.IsNullOrWhiteSpace(path) || type is null)
+        {
+            return null;
+        }
+        var data = File.ReadAllBytes(path);
+
+        return DecodeImage(data, type, size);
     }
 
     public byte[] ResizeImage(int size, int quality, string filePath)
@@ -56,9 +72,9 @@ public class ImageService : IImageService
             height = size;
         }
 
-        using var resized = original.Resize(new SKImageInfo(width, height), SKFilterQuality.Medium);
+        using var resized = original.Resize(new SKImageInfo(width, height), SKFilterQuality.High);
 
         using var image = SKImage.FromBitmap(resized);
-        return image.Encode(SKEncodedImageFormat.Jpeg, quality).ToArray();
+        return image.Encode(SKEncodedImageFormat.Png, quality).ToArray();
     }
 }
