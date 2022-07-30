@@ -1,9 +1,8 @@
 ﻿@page "/plants/add-plant"
 
-@inject PlantData _plantData
-@inject PlantPhotoData _plantPhotoData
 @inject IMediaService _mediaService
 @inject IFileService _fileService
+@inject PlantService _plantService
 @inject NavigationManager _nav
 
 <h3>Plants</h3>
@@ -36,23 +35,9 @@
 
     private async Task HandleValidSubmit(EditContext editContext)
     {
-        await _plantData.Insert(_plant);
 
-        if (photo != null)
-        {
-            PlantPhoto plantPhoto = new()
-                {
-                    PlantId = _plant.PlantId,
-                    Photo = await _fileService.GetFileBytes(photo.FilePath),
-                    PhotoContentType = photo.ContentType
-                };
-
-            await _plantPhotoData.Insert(plantPhoto);
-            _plant.PlantPhotoId = plantPhoto.PlantPhotoId;
-            await _plantData.Update(_plant);
-        }
-
-        _nav.NavigateTo($"plants/view-plant/{_plant.PlantId}");
+        await _plantService.AddPlant(_plant, photo);
+        _nav.NavigateTo($"plants/view-plant/{_plant.PlantId}", false, false);
     }
 
     private async Task TakePhoto()

@@ -21,9 +21,9 @@ CREATE TABLE IF NOT EXISTS "PlantActivity" (
 	"PlantActivityId"	INTEGER,
 	"PlantId"	INTEGER NOT NULL,
 	"ActivityId"	INTEGER NOT NULL,
-	"ActivityDate"	TEXT DEFAULT 'DATETIME()',
+	"ActivityDate"	TEXT DEFAULT (DATETIME('now')),
 	FOREIGN KEY("PlantId") REFERENCES "Plant"("PlantId"),
-	FOREIGN KEY("ActivityId") REFERENCES "sqlite_sequence",
+	FOREIGN KEY("ActivityId") REFERENCES "Activity"("ActivityId"),
 	PRIMARY KEY("PlantActivityId")
 );
 CREATE TABLE IF NOT EXISTS "PlantNote" (

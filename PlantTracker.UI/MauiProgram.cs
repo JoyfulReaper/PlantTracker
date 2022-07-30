@@ -20,6 +20,8 @@ public static class MauiProgram
 
         builder.Services.AddMauiBlazorWebView();
 
+        builder.Services.AddTransient(provider => new ActivityData(StaticConfiguration.ConnectionString));
+        builder.Services.AddTransient(provider => new PlantActivityData(StaticConfiguration.ConnectionString));
         builder.Services.AddTransient(provider => new PlantData(StaticConfiguration.ConnectionString));
         builder.Services.AddTransient(Provider => new PlantPhotoData(StaticConfiguration.ConnectionString));
 
@@ -27,6 +29,7 @@ public static class MauiProgram
         builder.Services.AddTransient<IMediaService, MediaService>();
         builder.Services.AddTransient<IFileService, FileService>();
         builder.Services.AddTransient<IImageService, ImageService>();
+        builder.Services.AddTransient<PlantService>();
 
         builder.Services.AddSingleton<IMediaPicker, CustomMediaPicker>();
 

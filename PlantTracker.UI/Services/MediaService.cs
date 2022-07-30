@@ -1,4 +1,4 @@
-﻿using PlantTracker.UI.Models;
+﻿using PlantTracker.Library.Models;
 using PlantTracker.UI.Services.Interfaces;
 
 namespace PlantTracker.UI.Services;

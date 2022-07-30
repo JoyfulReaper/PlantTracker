@@ -1,30 +1,37 @@
 ﻿@page "/"
 @inject PlantData _plantData
+@inject IDialogService _dialog
 
-<div class="row justify-content-center">
-    <div class="col-12 col-xl-10">
-        <table class="table table-sm table-striped table bordered">
-            <thead>
-                <tr>
-                    <th>Name</th>
-                    <th>Location</th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var plant in _plants)
-                {
+@if(_plants != null)
+{
+    <div class="row justify-content-center">
+        <div class="col-12 col-xl-10">
+            <table class="table table-sm table-striped table bordered">
+                <thead>
                     <tr>
-                        <td>@plant.Name</td>
-                        <td>@plant.Location</td>
-                        <td><a href="plants/view-plant/@plant.PlantId">view</a></td>
+                        <th>Name</th>
+                        <th>Location</th>
+                        <th></th>
                     </tr>
-                }
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    @foreach (var plant in _plants)
+                    {
+                        <tr>
+                            <td>@plant.Name</td>
+                            <td>@plant.Location</td>
+                            <td><a href="plants/view-plant/@plant.PlantId">view</a></td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
     </div>
-</div>
-
+}
+else
+{
+    <p>Something went wrong with the database :(</p>
+}
 
 @code
 {
@@ -32,6 +39,12 @@
 
     protected override async Task OnParametersSetAsync()
     {
-        _plants = await _plantData.GetAll();
+        try {
+            _plants = await _plantData.GetAll();
+        }
+        catch(Exception ex)
+        {
+            await _dialog.DisplayConfirm("Error", ex.Message, "Ok");
+        }
     }
 }
