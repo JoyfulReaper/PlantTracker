@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Components.WebView.Maui;
+﻿using Java.Security;
+using Microsoft.AspNetCore.Components.WebView.Maui;
 using Microsoft.Extensions.Configuration;
 using PlantTracker.Library.Data;
 using PlantTracker.Library.Services;
@@ -23,6 +24,9 @@ public static class MauiProgram
         builder.Services.AddMauiBlazorWebView();
 		builder.Services.AddTransient(provider => new PlantData(StaticConfiguration.ConnectionString));
 		builder.Services.AddTransient<IDialogService, DialogService>();
+		builder.Services.AddTransient(Provider => new PlantPhotoData(StaticConfiguration.ConnectionString));
+		builder.Services.AddTransient<IMediaService, MediaService>();
+		builder.Services.AddTransient<IFileService, FileService>();
         
 		#if DEBUG
 		builder.Services.AddBlazorWebViewDeveloperTools();

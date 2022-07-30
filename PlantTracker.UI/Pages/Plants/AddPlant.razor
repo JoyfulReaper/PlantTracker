@@ -1,50 +1,60 @@
 ﻿@page "/plants/add-plant"
 
 @inject PlantData _plantData
+@inject PlantPhotoData _plantPhotoData
+@inject IMediaService _mediaService
+@inject IFileService _fileService
 @inject NavigationManager _nav
 
 <h3>Plants</h3>
 
 <div class="row justify-content-center">
     <div class="col-12 col-xl-10">
-            <EditForm Model="_plant" OnValidSubmit="HandleValidSubmit">
-        <div class="mb-1">
-            <label class="form-label">Plant Name</label>
-            <InputText type="text" class="form-control" @bind-Value="_plant.Name"/>
-        </div>
-        <div class="mb-1">
-            <label class="form-label">Location</label>
-            <InputText type="text" class="form-control" @bind-Value="_plant.Location" />
-        </div>
-        <div class="mb-1">
-            <label class="form-label">Photo</label>
-                <InputFile OnChange="LoadPhoto" accept="image/*" capture />
-                <input type="file" accept="image/*;capture=camera">
-        </div>
-        <div>
-            <button class="btn btn-primary" type="submit">Add Plant</button>
-        </div>
-    </EditForm>
+        <EditForm Model="_plant" OnValidSubmit="HandleValidSubmit">
+            <div class="mb-1">
+                <label class="form-label">Plant Name</label>
+                <InputText type="text" class="form-control" @bind-Value="_plant.Name" />
+            </div>
+            <div class="mb-1">
+                <label class="form-label">Location</label>
+                <InputText type="text" class="form-control" @bind-Value="_plant.Location" />
+            </div>
+            <div class="mb-1">
+                <label class="form-label">Photo</label>
+                <button type="button" class="btn btn-primary" @onclick="TakePhoto">Take Photo</button>
+            </div>
+            <div>
+                <button class="btn btn-primary" type="submit">Add Plant</button>
+            </div>
+        </EditForm>
     </div>
 </div>
 
 @code {
     private Plant _plant = new();
-    private bool _isUploading;
-    private IBrowserFile _photo;
+    private FileContentType photo = null;
 
     private async Task HandleValidSubmit(EditContext editContext)
     {
         await _plantData.Insert(_plant);
+
+        if (photo != null)
+        {
+            PlantPhoto plantPhoto = new()
+                {
+                    PlantId = _plant.PlantId,
+                    Photo = await _fileService.GetFileBytes(photo.FilePath),
+                    PhotoContentType = photo.ContentType
+                };
+
+            await _plantPhotoData.Insert(plantPhoto);
+        }
+
         _nav.NavigateTo($"plants/view-plant/{_plant.PlantId}");
     }
 
-    private async Task LoadPhoto(InputFileChangeEventArgs e)
+    private async Task TakePhoto()
     {
-        _isUploading = true;
-
-        _photo = e.File;
-
-        _isUploading = false;
+        photo = await _mediaService.TakePhoto();
     }
 }
