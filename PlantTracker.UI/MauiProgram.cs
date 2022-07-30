@@ -1,50 +1,51 @@
-﻿using Java.Security;
-using Microsoft.AspNetCore.Components.WebView.Maui;
-using Microsoft.Extensions.Configuration;
-using PlantTracker.Library.Data;
+﻿using PlantTracker.Library.Data;
 using PlantTracker.Library.Services;
 using PlantTracker.UI.Services;
 using PlantTracker.UI.Services.Interfaces;
-using System.Reflection;
+
 
 namespace PlantTracker.UI;
 
 public static class MauiProgram
 {
-	public static MauiApp CreateMauiApp()
-	{
-		var builder = MauiApp.CreateBuilder();
-		builder
-			.UseMauiApp<App>()
-			.ConfigureFonts(fonts =>
-			{
-				fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
-			});
+    public static MauiApp CreateMauiApp()
+    {
+        var builder = MauiApp.CreateBuilder();
+        builder
+            .UseMauiApp<App>()
+            .ConfigureFonts(fonts =>
+            {
+                fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
+            });
 
         builder.Services.AddMauiBlazorWebView();
-		builder.Services.AddTransient(provider => new PlantData(StaticConfiguration.ConnectionString));
-		builder.Services.AddTransient<IDialogService, DialogService>();
-		builder.Services.AddTransient(Provider => new PlantPhotoData(StaticConfiguration.ConnectionString));
-		builder.Services.AddTransient<IMediaService, MediaService>();
-		builder.Services.AddTransient<IFileService, FileService>();
-        
-		#if DEBUG
-		builder.Services.AddBlazorWebViewDeveloperTools();
-		#endif
-		
-        
-		var app = builder.Build();
+
+        builder.Services.AddTransient(provider => new PlantData(StaticConfiguration.ConnectionString));
+        builder.Services.AddTransient(Provider => new PlantPhotoData(StaticConfiguration.ConnectionString));
+
+        builder.Services.AddTransient<IDialogService, DialogService>();
+        builder.Services.AddTransient<IMediaService, MediaService>();
+        builder.Services.AddTransient<IFileService, FileService>();
+
+        builder.Services.AddSingleton<IMediaPicker, CustomMediaPicker>();
+
+#if DEBUG
+        builder.Services.AddBlazorWebViewDeveloperTools();
+#endif
+
+
+        var app = builder.Build();
 
 
         SeedDatabase();
 
-		return app;
-	}
+        return app;
+    }
 
-	private static void SeedDatabase()
-	{
+    private static void SeedDatabase()
+    {
         var connectionString = $"Data Source={Path.Combine(FileSystem.Current.AppDataDirectory, "PlantTracker.db")}";
-		var seeder = new RawSqlExecuter(connectionString);
+        var seeder = new RawSqlExecuter(connectionString);
 
         using var stream = FileSystem.OpenAppPackageFileAsync("PlantTrackerDb.db.sql").GetAwaiter().GetResult();
         using var reader = new StreamReader(stream);

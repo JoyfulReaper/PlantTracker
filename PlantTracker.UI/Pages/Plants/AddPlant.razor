@@ -32,7 +32,7 @@
 
 @code {
     private Plant _plant = new();
-    private FileContentType photo = null;
+    private FileDetails photo = null;
 
     private async Task HandleValidSubmit(EditContext editContext)
     {
@@ -56,5 +56,6 @@
     private async Task TakePhoto()
     {
         photo = await _mediaService.TakePhoto();
+        var x = photo;
     }
 }
