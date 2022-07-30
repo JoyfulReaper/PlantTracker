@@ -48,6 +48,8 @@
                 };
 
             await _plantPhotoData.Insert(plantPhoto);
+            _plant.PlantPhotoId = plantPhoto.PlantPhotoId;
+            await _plantData.Update(_plant);
         }
 
         _nav.NavigateTo($"plants/view-plant/{_plant.PlantId}");
@@ -56,6 +58,5 @@
     private async Task TakePhoto()
     {
         photo = await _mediaService.TakePhoto();
-        var x = photo;
     }
 }

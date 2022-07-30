@@ -13,7 +13,9 @@ CREATE TABLE IF NOT EXISTS "Plant" (
 	"PlantId"	INTEGER,
 	"Name"	TEXT NOT NULL,
 	"Location"	TEXT,
-	PRIMARY KEY("PlantId")
+	"PlantPhotoId"	INTEGER,
+	PRIMARY KEY("PlantId"),
+	FOREIGN KEY("PlantPhotoId") REFERENCES "PlantPhoto"("PlantPhotoId")
 );
 CREATE TABLE IF NOT EXISTS "PlantActivity" (
 	"PlantActivityId"	INTEGER,
@@ -27,6 +29,7 @@ CREATE TABLE IF NOT EXISTS "PlantActivity" (
 CREATE TABLE IF NOT EXISTS "PlantNote" (
 	"PlantNoteId"	INTEGER,
 	"PlantId"	INTEGER NOT NULL,
+	"NoteDate"  TEXT NOT NULL DEFAULT (DATETIME('now')),
 	FOREIGN KEY("PlantId") REFERENCES "Plant"("PlantId"),
 	PRIMARY KEY("PlantNoteId")
 );
@@ -35,7 +38,7 @@ CREATE TABLE IF NOT EXISTS "PlantPhoto" (
 	"PlantId"	INTEGER NOT NULL,
 	"Photo"	BLOB NOT NULL,
 	"PhotoContentType"	TEXT NOT NULL,
-	"DateAdded"	TEXT NOT NULL DEFAULT 'GETDATETIME()',
+	"DateAdded"	TEXT NOT NULL DEFAULT (DATETIME('now')),
 	FOREIGN KEY("PlantId") REFERENCES "Plant"("PlantId"),
 	PRIMARY KEY("PlantPhotoId")
 );

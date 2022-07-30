@@ -10,4 +10,5 @@ public class Plant
     public int PlantId { get; set; }
     public string Name { get; set; } = null!;
     public string? Location { get; set; }
+    public int? PlantPhotoId { get; set; }
 }

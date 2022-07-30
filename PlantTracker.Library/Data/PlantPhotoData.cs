@@ -33,12 +33,12 @@ public class PlantPhotoData
         plantPhoto.PlantPhotoId = id;
     }
 
-    public async Task<PlantPhoto> GetPlantPhoto(int plantId)
+    public async Task<PlantPhoto> GetPlantPhoto(int plantPhotoId)
     {
         using IDbConnection connection = new SqliteConnection(_connectionString);
 
-        string sql = "SELECT * FROM PlantPhoto WHERE PlantId = @PlantId";
-        var plantPhoto = await connection.QuerySingleAsync<PlantPhoto>(sql, new { PlantId = plantId });
+        string sql = "SELECT * FROM PlantPhoto WHERE PlantPhotoId = @PlantPhotoId";
+        var plantPhoto = await connection.QuerySingleAsync<PlantPhoto>(sql, new { PlantPhotoId = plantPhotoId });
 
         return plantPhoto;
     }

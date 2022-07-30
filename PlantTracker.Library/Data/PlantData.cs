@@ -17,16 +17,31 @@ public class PlantData
     {
         using IDbConnection connection = new SqliteConnection(_connectionString);
 
-        string sql = "INSERT INTO Plant (Name, Location) VALUES (@Name, @Location); SELECT last_insert_rowid()";
+        string sql = "INSERT INTO Plant (Name, Location, PlantPhotoId) VALUES (@Name, @Location, @PlantPhotoId); SELECT last_insert_rowid()";
         var id = await connection.QuerySingleAsync<int>(sql, new
         {
             Name = plant.Name,
             Location = plant.Location,
+            PlantPhotoId = plant.PlantPhotoId
         });
 
         plant.PlantId = id;
     }
 
+    public async Task Update(Plant plant)
+    {
+        using IDbConnection connection = new SqliteConnection(_connectionString);
+
+        string sql = "UPDATE Plant SET Name = @Name, Location = @Location, PlantPhotoId = @PlantPhotoId WHERE PlantId = @PlantId";
+        await connection.ExecuteAsync(sql, new
+        {
+            Name = plant.Name,
+            Location = plant.Location,
+            PlantPhotoId = plant.PlantPhotoId,
+            PlantId = plant.PlantId
+        });
+    }
+    
     public async Task<IEnumerable<Plant>> GetAll()
     {
         using IDbConnection connection = new SqliteConnection(_connectionString);

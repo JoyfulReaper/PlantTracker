@@ -26,6 +26,7 @@ public static class MauiProgram
         builder.Services.AddTransient<IDialogService, DialogService>();
         builder.Services.AddTransient<IMediaService, MediaService>();
         builder.Services.AddTransient<IFileService, FileService>();
+        builder.Services.AddTransient<IImageService, ImageService>();
 
         builder.Services.AddSingleton<IMediaPicker, CustomMediaPicker>();
 

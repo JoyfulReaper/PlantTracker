@@ -1,11 +1,17 @@
 ﻿@page "/plants/view-plant/{Id:int}"
 @inject PlantData _plantData
+@inject PlantPhotoData _plantPhotoData
+@inject IImageService _imageService
 
 <div class="row justify-content-center">
     <div class="col-12 col-xl-10">
         <div class="text-center">
             <h3>@_plant.Name</h3>
             <h4>@_plant.Location</h4>
+            @if (_plantPhoto != null)
+            {
+                <img src="@_imageService.DecodeImage(_plantPhoto.Photo, _plantPhoto.PhotoContentType)" class="img-fluid" />
+            }
         </div>
        
     </div>
@@ -16,9 +22,14 @@
     public int Id { get; set; }
 
     private Plant _plant;
+    private PlantPhoto _plantPhoto;
 
     protected override async Task OnInitializedAsync()
     {
         _plant = await _plantData.Get(Id);
+        if(_plant.PlantPhotoId != null)
+        {
+            _plantPhoto = await _plantPhotoData.GetPlantPhoto(_plant.PlantPhotoId.Value);
+        }
     }
 }
