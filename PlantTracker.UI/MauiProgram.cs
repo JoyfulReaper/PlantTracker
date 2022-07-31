@@ -1,5 +1,6 @@
 ﻿using PlantTracker.Library.Data;
 using PlantTracker.Library.Services;
+using PlantTracker.UI.Platforms;
 using PlantTracker.UI.Services;
 using PlantTracker.UI.Services.Interfaces;
 
@@ -28,9 +29,11 @@ public static class MauiProgram
         builder.Services.AddTransient<IDialogService, DialogService>();
         builder.Services.AddTransient<IMediaService, MediaService>();
         builder.Services.AddTransient<IFileService, FileService>();
-        builder.Services.AddTransient<IImageService, ImageService>();
-        builder.Services.AddTransient<PlantService>();
 
+
+        builder.Services.AddTransient<IImageService, ImageService>();
+        
+        builder.Services.AddTransient<PlantService>();
         builder.Services.AddTransient<PlantVmService>();
 
         builder.Services.AddSingleton<IMediaPicker, CustomMediaPicker>();

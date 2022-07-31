@@ -10,7 +10,7 @@
             <h4>@_plant.Location</h4>
             @if (_plantPhoto != null)
             {
-                <img src="@_imageService.DecodeImage(_plantPhoto.Photo, "image/jpeg")" class="img-fluid" />
+                <img src="@_imageService.DecodeImage(_plantPhoto.Photo, "image/jpeg", 100)" class="img-fluid" />
             }
         </div>
        
